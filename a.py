@@ -11,5 +11,12 @@ def check_code():
             temp = random.randint(0,9)
         check_code += str(temp)
     return check_code
-code = check_code()
-print(code)
+while True:
+    code = check_code()
+    print(code)
+    v1 = input('请输入验证码： ')
+    if v1.upper() == code:
+        print('ok,login now!')
+        break
+    else:
+        print('sorry,retry!')
