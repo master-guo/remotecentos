@@ -4,4 +4,4 @@ import sys
 def jia(a,b):
     print(a + b)
 
-jia(sys.argv[1],sys.argv[2])
+jia(int(sys.argv[1]),int(sys.argv[2]))
