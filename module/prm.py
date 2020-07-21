@@ -14,6 +14,3 @@ def guo_ssh(ip,username,password,port=22,cmd='ls'):
 if __name__ == '__main__':
     print(guo_ssh('192.168.18.128','root','redhat',22,'ls'))
     print(os.getcwd(),os.listdir())
-    f = open(r'test.py','r')
-    print(f.read())
-    f.close()
