@@ -4,6 +4,7 @@ import paramiko
 import os, sys
 import json
 import time,datetime
+from datafile import *
 
 
 
@@ -63,10 +64,12 @@ def sshconfig(ip, port, username, password, cmd, PS1):
     return result
 
 if __name__ == "__main__":
-    k = sshconfig("192.168.101.10",22,"masterxu","a-o1cXrxga",'display cur','<NewF1-outside-1>')
-    tm = datetime.datetime.now()
-    recordtime = tm.strftime("%Y-%m-%d")
-    filename = recordtime + "_" + "192.168.101.10" + ".config"
-    file = open(filename,'w')
-    file.write(k)
-    file.close()
+
+    for key,value in dict1.items():
+        k = sshconfig(key,value[0],value[1],value[2],value[3],value[4])
+        tm = datetime.datetime.now()
+        recordtime = tm.strftime("%Y-%m-%d")
+        filename = recordtime + "_" + key + ".config"
+        file = open(filename,'w')
+        file.write(k)
+        file.close()
