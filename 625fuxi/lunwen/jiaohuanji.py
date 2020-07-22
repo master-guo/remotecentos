@@ -16,14 +16,14 @@ def sshconfig(ip, port, username, password, cmd, PS1):
     client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     # 连接SSH服务端，以用户名和密码进行认证
     client.connect(hostname=ip, username=username, password=password, look_for_keys=False)
-    chan = client.invoke_shell()
-    chan.settimeout(9000)
+    getshell = client.invoke_shell()
+    getshell.settimeout(9000)
 
 
     # 获取登陆后的消息
     welcomeinfo = ''
     while True:
-        line = str(chan.recv(4096),encoding="utf-8")
+        line = str(getshell.recv(4096),encoding="utf-8")
         welcomeinfo += line
         if (PS1 is not None) & (len(PS1) > 0):
             isFindPS1 = False;
@@ -35,7 +35,7 @@ def sshconfig(ip, port, username, password, cmd, PS1):
     print(welcomeinfo)
 
 
-    chan.send(cmd + '\n')
+    getshell.send(cmd + '\n')
     result = ''
     # more交互处理
     more = 'More'
@@ -45,12 +45,12 @@ def sshconfig(ip, port, username, password, cmd, PS1):
     #  循环获取数据
     time.sleep(1)
     while True:
-        line2 = str(chan.recv(65535),encoding="utf-8")
+        line2 = str(getshell.recv(65535),encoding="utf-8")
 
         result += line2
 
         if (more in line2) | (more2 in line2) | (more3 in line2) | (more4 in line2):
-            chan.send(" ")
+            getshell.send(" ")
             time.sleep(1)
             continue
         if (PS1 is not None) & (len(PS1) > 0):
@@ -94,6 +94,6 @@ if __name__ == "__main__":
 
     for i in result1:
         if i.get().startswith('!'):
-            print("%s configuration saved failed!" % i.get().strip('!'))
+            print("fail to save %s configuration!" % i.get().strip('!'))
         else:
-            print("%s configuration saved successfully!" % i.get())
+            print("success to save %s configuration!" % i.get())
