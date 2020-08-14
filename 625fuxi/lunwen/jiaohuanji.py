@@ -5,6 +5,7 @@ import os, sys
 import time,datetime
 from datafile import *
 from multiprocessing import Pool as ProcessPool
+from multiprocessing.pool import ThreadPool
 
 
 
@@ -31,7 +32,7 @@ def sshconfig(ip, port, username, password, cmd, PS1):
                     isFindPS1 = True
             if isFindPS1 == True:
                 break;
-    print(welcomeinfo)
+    # print(welcomeinfo)
 
 
     getshell.send(cmd + '\n')
@@ -60,7 +61,7 @@ def sshconfig(ip, port, username, password, cmd, PS1):
             if isFindPS1 == True:
                 break
 
-    print(result)
+    # print(result)
     return result
 
 
@@ -85,14 +86,13 @@ def getconfig(key,port,user,passwd,command,ps):
 result1 = []
 if __name__ == "__main__":
     starttime = datetime.datetime.now()
-    pool = ProcessPool(5)
+    pool = ThreadPool(5)
     for key, value in dict1.items():
         result = pool.apply_async(getconfig,args=(key,value[0],value[1],value[2],value[3],value[4]))
         result1.append(result)
     pool.close()
     pool.join()
 
-    print(result1)
 
     for i in result1:
         if i.get().startswith('!'):
