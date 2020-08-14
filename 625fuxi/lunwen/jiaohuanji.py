@@ -86,7 +86,7 @@ def getconfig(key,port,user,passwd,command,ps):
 result1 = []
 if __name__ == "__main__":
     starttime = datetime.datetime.now()
-    pool = ThreadPool(5)
+    pool = ThreadPool(2)
     for key, value in dict1.items():
         result = pool.apply_async(getconfig,args=(key,value[0],value[1],value[2],value[3],value[4]))
         result1.append(result)
