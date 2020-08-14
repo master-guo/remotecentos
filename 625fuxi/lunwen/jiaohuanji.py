@@ -2,7 +2,6 @@
 #coding:utf-8
 import paramiko
 import os, sys
-import json
 import time,datetime
 from datafile import *
 from multiprocessing import Pool as ProcessPool
@@ -38,7 +37,7 @@ def sshconfig(ip, port, username, password, cmd, PS1):
     getshell.send(cmd + '\n')
     result = ''
     # more交互处理
-    more = 'More'
+    more1 = 'More'
     more2 = '--More--'
     more3 = '<--- More --->'
     more4 = '---- More ----'
@@ -49,7 +48,7 @@ def sshconfig(ip, port, username, password, cmd, PS1):
 
         result += line2
 
-        if (more in line2) | (more2 in line2) | (more3 in line2) | (more4 in line2):
+        if (more1 in line2) | (more2 in line2) | (more3 in line2) | (more4 in line2):
             getshell.send(" ")
             time.sleep(1)
             continue
@@ -85,6 +84,7 @@ def getconfig(key,port,user,passwd,command,ps):
 
 result1 = []
 if __name__ == "__main__":
+    starttime = datetime.datetime.now()
     pool = ProcessPool(5)
     for key, value in dict1.items():
         result = pool.apply_async(getconfig,args=(key,value[0],value[1],value[2],value[3],value[4]))
@@ -92,8 +92,13 @@ if __name__ == "__main__":
     pool.close()
     pool.join()
 
+    print(result1)
+
     for i in result1:
         if i.get().startswith('!'):
             print("fail to save %s configuration!" % i.get().strip('!'))
         else:
             print("success to save %s configuration!" % i.get())
+    endtime = datetime.datetime.now()
+
+    print(endtime - starttime)
