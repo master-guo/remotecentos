@@ -9,3 +9,9 @@ class Person:
 
     def giveraise(self,percent):
         self.salary = self.salary * ( 1 + percent)
+
+    def setWife(self,wife):
+        self.wife = wife
+
+    def cheng(self,x,y):
+        return x*y
